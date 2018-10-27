@@ -19,7 +19,7 @@ locale                   : "en-US"
 title                    : "Wei Jun's Site"
 title_separator          : "-"
 name                     : "W J Loh"
-description              : "A personal learning journal on tech"
+description              : "Wei Jun's Personal Blog"
 url                      : # the base hostname & protocol for your site e.g. "https://mmistakes.github.io"
 baseurl                  : # the subpath of your site, e.g. "/blog"
 repository               : # GitHub username/repo-name e.g. "mmistakes/minimal-mistakes"
@@ -102,8 +102,8 @@ analytics:
 # Site Author
 author:
   name             : "Loh Wei Jun"
-  avatar           : "/assets/images/bio-photo.jpg" # path of avatar image, e.g. "/assets/images/bio-photo.jpg"
-  bio              : "Irrelevent guy trying to be relevent in the tech industry"
+  avatar           : "/assets/images/myphoto.jpg" # path of avatar image, e.g. "/assets/images/bio-photo.jpg"
+  bio              : "Irrelevent guy trying to be relevent. A huge sucker for Technology and eSports."
   location         : "Singapore"
   email            : "wjloh91@gmail.com"
   links:
