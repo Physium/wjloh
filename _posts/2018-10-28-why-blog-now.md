@@ -4,7 +4,7 @@ categories:
   - General
 ---
 
-I have been wanting to do this for quite awhile now but I could just never find the reason to start blogging about something. After much procastination, I felt that this is a best time for me to document/share my journey into the world of cloud/software-defined datacenter. Given that IT has always been progressing at such a fast pace, as much as possible I would love to translate my learnings into words which may eventually help me learn better and retain the knowledge.
+I have been wanting to do this for quite awhile now but I could just never find the reason to start blogging about something. After much procastination, I felt that this is a best time for me to document/share my journey into the world of cloud/software-defined datacenter. Given that IT has always been progressing at such a fast pace, as much as possible I would love to translate my learnings into words which may help me in terms of retaining knowledge. More importantly, I hope that whatever content I put out will eventuantly help others who are on this similar journey.
 
 Althought I may not be the best when it comes to gathering my thoughts and putting it into words, but rest assure I'll try my best to be as clear and concise as possible. 
 
