@@ -29,8 +29,8 @@ As I did not want to mix my personal home network environment up with my lab net
 
 Random photos of my actual setup:
 
-![Homelab Physical 1](/assets/images/homelab/PhysicalSetup1.jpg "Homelab Physical 1"){:height="40%" width="40%"}
-![Homelab Physical 2](/assets/images/homelab/PhysicalSetup2.jpg "Homelab Physical 2"){:height="40%" width="40%"}
+![Homelab Physical 1](/assets/images/homelab/PhysicalSetup1.JPG "Homelab Physical 1"){:height="40%" width="40%"}
+![Homelab Physical 2](/assets/images/homelab/PhysicalSetup2.JPG "Homelab Physical 2"){:height="40%" width="40%"}
 
 ## Software Overview
 Essentially, these are the fundamental solutions that allows me to run a virtualize environment.
