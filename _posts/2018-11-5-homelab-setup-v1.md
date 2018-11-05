@@ -23,14 +23,14 @@ So the hardware I have are of the following:
 ## Setup Overview
 Below is a quick overview of the physical setup of my lab environment.
 
-![alt text](/assets/images/homelab/Homelab.jpg "Homelab Overview")
+![Homelab Overview](/assets/images/homelab/Homelab.jpg "Homelab Overview")
 
 As I did not want to mix my personal home network environment up with my lab network environment, I decided to opt with the usage of pfSense as a virtual router. Essentially, this helps me out with getting internet connectivity within my lab environment through double NAT-ing.
 
 Random photos of my actual setup:
 
-![alt text](/assets/images/homelab/PhysicalSetup1.jpg "Homelab Physical 1"){:height="40%" width="40%"}
-![alt text](/assets/images/homelab/PhysicalSetup2.jpg "Homelab Physical 2"){:height="40%" width="40%"}
+![Homelab Physical 1](/assets/images/homelab/PhysicalSetup1.jpg "Homelab Physical 1"){:height="40%" width="40%"}
+![Homelab Physical 2](/assets/images/homelab/PhysicalSetup2.jpg "Homelab Physical 2"){:height="40%" width="40%"}
 
 ## Software Overview
 Essentially, these are the fundamental solutions that allows me to run a virtualize environment.
