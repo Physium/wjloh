@@ -20,6 +20,8 @@ So the hardware I have are of the following:
 * 1 X Dell Workstation M4800 ( 2 x SSD 512, 32GB RAM, spare for now )
 * 1 x 8 port 1G D-LINK unmanaged switch
 
+If you have notice, all of the NUC boxes including the Workstation comes with 2 SSDs. This means that I'll be able to run vSAN across the boxes as vSAN requires a minimum of 1 cache and 1 capacity disk. This reduces the need of me sourcing for an additional shared storage just so I can mess with vSphere related high availability features.
+
 ## Setup Overview
 Below is a quick overview of the physical setup of my lab environment.
 
@@ -33,11 +35,13 @@ Random photos of my actual setup:
 ![Homelab Physical 2](/assets/images/homelab/PhysicalSetup2.JPG "Homelab Physical 2"){:height="40%" width="40%"}
 
 ## Software Overview
-Essentially, these are the fundamental solutions that allows me to run a virtualize environment.
+Essentially, these are the fundamental solutions that allows me to get a virtualize environment going.
 * vCenter 6.7
 * vSphere 6.7
 * vSAN 6.7
 * vRealize Operations 7
+
+The fundamental
 
 ## Future Plans & Conclusion
 For a start, I'd like to leave this post focusing mainly on the physical components side of things. As part of my plan, I aim to talk more about the virtual setup and configuration of my lab. Moving forward, I'll be using this setup as a baseline to carry out further implementation of other VMware solutions. Thou I dont really have a crazy homelab setup, I believe theres still fairly alot of room for me to work with. This also means that alot of the content that I'll be sharing is something that you as a reader can following along and its not something too far off for you to try it on your own. Annnnnd of course, when opportunitiy arises I defintely wish to expand this lab environment but till then I shall leave it as it is and work with what I have.
