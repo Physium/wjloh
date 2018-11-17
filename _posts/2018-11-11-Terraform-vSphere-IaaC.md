@@ -403,6 +403,6 @@ resource "vsphere_virtual_machine" "vm" {
   }
 }
 ```
-Now, executing ``terraform apply`` will end of with a success instead. 
+Now, executing ``terraform apply`` will end off with a success instead. 
 
 
