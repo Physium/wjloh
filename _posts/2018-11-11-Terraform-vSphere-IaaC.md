@@ -1,5 +1,5 @@
 ---
-title: "Terraform with vSphere"
+title: "Provisioning VMs on vSphere with Terraform"
 categories: 
   - IaaC
 tags:
@@ -10,41 +10,39 @@ toc: true
 
 Over the weekend instead of accomplishing my entire TO-DO list, I kinda procastinated and went totally of the track instead. I've have always wanted to check out what this whole **"Infrastructure as a Code"** thing is all about and I have heard quite abit about Terraform being one of the solution that can help achieve this. 
 
-So with Terraform, you can make calls to vSphere to provision VMs (Virtual Machines) without the need of accessing the vSphere/vCenter Client interface. All this is done via writing your own configuration file with Terraform's own configuration language, HCL.
+So with Terraform, you can make calls to vSphere to provision VMs without the need of accessing the vSphere/vCenter Client interface. All this is done via writing your own configuration file with Terraform's own configuration language, HCL.
 
-## Getting Started
-
-Considering that I'm on macOS, getting started is as easy as:
+## Terraform Installation
+Considering that I'm on macOS, getting Terraform up and running is as easy as:
 ```bash
 brew install Terraform
 ```
 
 If you are on Windows, I believe Windows now has a package manager called **[Chocolatey](https://chocolatey.org/)** where you can simply run:
-
 ```bash
 choco install Terraform
 ```
 
-## The Basics
+If you do not wish to use a package manager for your installion, please have a look at the offical documentation **[here](https://www.terraform.io/intro/getting-started/install.html)** on how to set up Terraform on your machine.
+
+## Getting Started with Terraform Configurations
 
 At the very high level, a typical Terraform configuration consist of the following:
 
 * Providers
+* Data Sources
 * Resources
-* Terraform Lifecycle - ``init``,``plan`` ,``apply`` ,``destory``
-* States
+* Variables
 
-## Spinning up a VM on vSphere with Terraform
+I've decided to start off with their example configuration template that was provided **[here](https://www.terraform.io/docs/providers/vsphere/index.html#argument-reference)**. This template pretty much covers the basic usage of spinning up a VM in vSphere with Terraform. But there seems to be some missing components that prevents the code from succesfully executing. I will be addressing that along the way.
 
-I've decided to start off with one of the tempate that they have provided **[here](https://www.terraform.io/docs/providers/vsphere/index.html#argument-reference)**. This template pretty much covers the basic usage of spinning up a VM in vSphere with Terraform. But there seems to be some missing components that prevents the code from succesfully executing. I will be addressing that along the way.
-
-What I'll do with the example is that I'll break them up into different components and explain what is needed to be done in each code block.
+What I'll do next is that I will breakdown the example into different components and explain what is needed to be done in each configuration block.
 
 ### Setting up the Provider
 
-First lets start of with the **Provider**. The provider component acts as the first step in terms of initalizing the entire Terraform setup. Given that Terraform works with a large variety of infrastrucutre providers be it your public cloud or on-prem offerings, this is where we tell Terraform what provider(s) are we working with for this particular setup. Essentially, the provider is responsible for the understanding API interactions and exposing resources for us.
+First lets start of with the **Provider**. The provider component acts as the first step in terms of initalizing the entire Terraform setup. Given that Terraform works with a large variety of infrastrucutre providers be it your public cloud or on-prem offerings, this is where we tell Terraform what provider(s) are we working with for this particular setup. Essentially, the provider is responsible for the understanding API interactions and exposes resources for us.
 
-What you need to do here is input your vCenter/vSphere Client login credentials and the hostname of the vCenter/vSphere server.
+What you need to do here is input your vCenter login credentials and the hostname of the vCenter server. The example showcase the usage of variables but lets skip that for now.
 
 ```ruby
 provider "vsphere" {
@@ -57,8 +55,141 @@ provider "vsphere" {
 }
 ```
 
-Once that is done, we can proceed to carry out ``terraform init`` which you will then see the following which confirms that initailization has successfully taken place.
+### Assigning Data Sources 
 
+>*Data sources* allows data to be fetched or computed for use elsewhere in Terraform configuration. Use of data sources allows a Terraform configuration to build on information defined outside of Terraform, or defined by another separate Terraform configuration.
+
+Essentially, this is how we fetch vSphere related information from our environment and define it at as a data source object which will then be use as part of the VM resource configuration.
+
+What we do here is change the **name** parameter to the name of our resources that is set within our environment.
+```ruby
+data "vsphere_datacenter" "dc" {
+  name = "Winterfell"
+}
+
+data "vsphere_datastore" "datastore" {
+  name          = "vsanDatastore"
+  datacenter_id = "${data.vsphere_datacenter.dc.id}"
+}
+
+data "vsphere_resource_pool" "pool" {
+  name          = "vSAN Cluster/Resources"
+  datacenter_id = "${data.vsphere_datacenter.dc.id}"
+}
+
+data "vsphere_network" "network" {
+  name          = "VM-Network-DVPG"
+  datacenter_id = "${data.vsphere_datacenter.dc.id}"
+}
+```
+
+### Creating Resources
+
+>*Resources* are a component of your infrastructure. It might be some low level component such as a physical server, virtual machine, or container. Or it can be a higher level component such as an email provider, DNS record, or database provider.
+
+This segment here declares the type of resource you want to create, in this case its a VM. There are several configurations with regards to the VM that you can set. What is shown below is the minimum required to get a VM up and runninng. For more information on what can be configured, refer to the full documentation of the **vsphere_virtural_machine** **[here](https://www.terraform.io/docs/providers/vsphere/r/virtual_machine.html)**.
+
+```ruby
+resource "vsphere_virtual_machine" "vm" {
+  name             = "terraform-test"
+  resource_pool_id = "${data.vsphere_resource_pool.pool.id}"
+  datastore_id     = "${data.vsphere_datastore.datastore.id}"
+
+  num_cpus = 2
+  memory   = 1024
+  guest_id = "other3xLinux64Guest"
+
+  network_interface {
+    network_id = "${data.vsphere_network.network.id}"
+  }
+
+  disk {
+    label = "disk0"
+    size  = 50
+  }
+}
+```
+
+### Troubleshooting
+
+Upon executing the configuration, I realise that it actually succesfully spins up the VM in my vCenter. However, in the terminal it's stuck in this never ending loop of *'Still Creating...'* which was very puzzling. What I found out was that it was trying to make a connection to the VM and since there wasnt any OS or IP Address in the VM, it kept waiting for the VM to be assigned a connection till it timeout. For more information on this, you can read about it **[here](https://www.terraform.io/docs/providers/vsphere/r/virtual_machine.html#customization-and-network-waiters)**.
+
+After a little bit of googling around, I found out there are 2 ways fix this.
+
+1) I could simply add the following to the resource configuration to tell Terraform to not wait for any IP Address configuration.
+```ruby
+ wait_for_guest_net_timeout = 0
+```
+
+2) I could clone a VM using a VM template and customize it with a valid routable IP address. With that, I created a simple CentOS VM and converted it to a temaplate.
+
+Next, I added the following to the configurations:
+* A data source to retrieve the VM template
+* A clone attribute in the VM resource
+
+```ruby
+#Data source for VM template
+data "vsphere_virtual_machine" "template" {
+  name = "CentOSVM"
+  datacenter_id = "${data.vsphere_datacenter.dc.id}"
+}
+
+resource "vsphere_virtual_machine" "vm" {
+  name             = "terraform-test"
+  resource_pool_id = "${data.vsphere_resource_pool.pool.id}"
+  datastore_id     = "${data.vsphere_datastore.datastore.id}"
+
+  num_cpus = 1
+  memory   = 1024
+  guest_id = "centos7_64Guest"
+
+  network_interface {
+    network_id = "${data.vsphere_network.network.id}"
+  }
+
+  disk {
+    label = "disk0"
+    size  = 50
+  }
+
+  #Included a clone attribute in the resource
+  clone {
+    template_uuid = "${data.vsphere_virtual_machine.template.id}"
+
+    customize {
+      linux_options{
+        host_name = "wjloh"
+        domain = "winterfell.lan"
+      }
+      network_interface {
+        ipv4_address = "10.206.1.112"
+        ipv4_netmask = "24"
+      }
+
+      ipv4_gateway = "10.206.1.1"
+      dns_suffix_list = ["winterfell.lan"]
+      dns_server_list = ["10.206.1.10"]
+    }
+  }
+}
+```
+Now, executing it will end off with a success instead.
+
+## Executing Terraform Configurations
+
+Now, I'll talk about how to execute the configuration files.
+
+The lifecycle of running and managing Terraform configurations comes in 4 parts.
+* init
+* plan
+* apply
+* destroy
+
+### Initalizing Terraform
+
+We first start off by running ``terraform init`` . Terraform will proceed to initalize the provider(s) which you have indicated in your configuration file. 
+
+The following is an example output which confirms that the initailization has successfully taken place.
 
 ```bash
 $ terraform init
@@ -88,61 +219,9 @@ rerun this command to reinitialize your working directory. If you forget, other
 commands will detect it and remind you to do so if necessary.
 ```
 
-### Assigning Data Sources 
+### Terraform Plan
 
->*Data sources* allow data to be fetched or computed for use elsewhere in Terraform configuration. Use of data sources allows a Terraform configuration to build on information defined outside of Terraform, or defined by another separate Terraform configuration.
-
-When we move to the resource section of setting up the type of VM that we want, the *data sources* essentially makes it alot easier for us to input the required id.
-
-What we do here is change the **name** parameter to the name of our resources that is set within our environment.
-```ruby
-data "vsphere_datacenter" "dc" {
-  name = "Winterfell"
-}
-
-data "vsphere_datastore" "datastore" {
-  name          = "vsanDatastore"
-  datacenter_id = "${data.vsphere_datacenter.dc.id}"
-}
-
-data "vsphere_resource_pool" "pool" {
-  name          = "vSAN Cluster/Resources"
-  datacenter_id = "${data.vsphere_datacenter.dc.id}"
-}
-
-data "vsphere_network" "network" {
-  name          = "VM-Network-DVPG"
-  datacenter_id = "${data.vsphere_datacenter.dc.id}"
-}
-```
-
-### Creating Resources
-
->*Resources* are a component of your infrastructure. It might be some low level component such as a physical server, virtual machine, or container. Or it can be a higher level component such as an email provider, DNS record, or database provider.
-
-The code segment here basically declares the type of resource you want to create, in this case its a VM. There are several configurations with regards to the VM that you can set. What is shown below is the minimum required to get a VM up and runninng. For more information on what can be configured, refer to the full documentation of the vsphere_virtural_machine **[here](https://www.terraform.io/docs/providers/vsphere/r/virtual_machine.html)**.
-
-```ruby
-resource "vsphere_virtual_machine" "vm" {
-  name             = "terraform-test"
-  resource_pool_id = "${data.vsphere_resource_pool.pool.id}"
-  datastore_id     = "${data.vsphere_datastore.datastore.id}"
-
-  num_cpus = 2
-  memory   = 1024
-  guest_id = "other3xLinux64Guest"
-
-  network_interface {
-    network_id = "${data.vsphere_network.network.id}"
-  }
-
-  disk {
-    label = "disk0"
-    size  = 50
-  }
-}
-```
-### Running Terraform Plan
+Next, you can run ``terraform plan`` which gives you a good overview on what are the final configurations that will be executed. Here is a good time to review your configurations and check if you would like to make any changes.
 
 ```bash
 $ terraform plan
@@ -248,7 +327,9 @@ can't guarantee that exactly these actions will be performed if
 "terraform apply" is subsequently run.
 ```
 
-### Running Terraform Apply
+### Terraform Apply
+
+Once you have confirm on the configurations as shown in ``terraform plan``, the next step would be to apply the configurations and spin up the resource!
 
 ```bash
 $ terraform apply
@@ -345,64 +426,76 @@ Do you want to perform these actions?
   Terraform will perform the actions described above.
   Only 'yes' will be accepted to approve.
 
-  Enter a value: 
+  Enter a value: yes
+
+vsphere_virtual_machine.vm: Creating...
+  ...
+  # a repeat of the configs shown above
+  ...
+vsphere_virtual_machine.vm: Still creating... (10s elapsed)
+...
+vsphere_virtual_machine.vm: Creation complete after 2m11s (ID: 422870ff-7786-f80c-44de-8b4743018a0d)
+
+Apply complete! Resources: 1 added, 0 changed, 0 destroyed.
 ```
 
-### Getting it to succesfully execute
+Upon completion, head over to your vCenter and you'll see your VM up and running with the configurations that you have assigned!
 
-So in example that was provided, upon executing ``terraform apply`` what I realise that it actually succesfully spins up the VM in my vCenter. However, in the terminal it's stuck in this never ending loop of *'Still Creating...'* . What I found out was that it seems like it was trying to make a connection to the VM and since there wasnt any OS or IP Address in the VM, it kept waiting for the VM to get one till it timeout.
+### Terraform Destroy
 
-After a little bit of googling around, I found out what I should have done was to base my resource off a VM template. So I created a simple CentOS VM and converted it to a temaplate.
+Now that you have created a VM, what happens if you wanna remove it? Since the VM is created by Terraform it would be best if the VM is remove via Terraform as well instead of directly deleting it off from the vCenter. This way we can ensure that the **[state](https://www.terraform.io/docs/state/index.html)** files are up to date.
 
-Next, I added the following to the configurations:
-* Data source to the template
-* Clone parameters in the VM resource
+```bash
+$ terraform destroy
+data.vsphere_datacenter.dc: Refreshing state...
+data.vsphere_network.network: Refreshing state...
+data.vsphere_resource_pool.pool: Refreshing state...
+data.vsphere_datastore.datastore: Refreshing state...
+data.vsphere_virtual_machine.template: Refreshing state...
+vsphere_virtual_machine.vm: Refreshing state... (ID: 422870ff-7786-f80c-44de-8b4743018a0d)
 
-```ruby
-data "vsphere_virtual_machine" "template" {
-  name = "CentOSVM"
-  datacenter_id = "${data.vsphere_datacenter.dc.id}"
-}
+An execution plan has been generated and is shown below.
+Resource actions are indicated with the following symbols:
+  - destroy
 
-resource "vsphere_virtual_machine" "vm" {
-  name             = "terraform-test"
-  resource_pool_id = "${data.vsphere_resource_pool.pool.id}"
-  datastore_id     = "${data.vsphere_datastore.datastore.id}"
+Terraform will perform the following actions:
 
-  num_cpus = 1
-  memory   = 1024
-  guest_id = "centos7_64Guest"
+  - vsphere_virtual_machine.vm
 
-  network_interface {
-    network_id = "${data.vsphere_network.network.id}"
-  }
 
-  disk {
-    label = "disk0"
-    size  = 50
-  }
+Plan: 0 to add, 0 to change, 1 to destroy.
 
-  #Included a clone parameter in the resource
-  clone {
-    template_uuid = "${data.vsphere_virtual_machine.template.id}"
+Do you really want to destroy all resources?
+  Terraform will destroy all your managed infrastructure, as shown above.
+  There is no undo. Only 'yes' will be accepted to confirm.
 
-    customize {
-      linux_options{
-        host_name = "wjloh"
-        domain = "winterfell.lan"
-      }
-      network_interface {
-        ipv4_address = "10.206.1.112"
-        ipv4_netmask = "24"
-      }
+  Enter a value: yes
 
-      ipv4_gateway = "10.206.1.1"
-      dns_suffix_list = ["winterfell.lan"]
-      dns_server_list = ["10.206.1.10"]
-    }
-  }
-}
+vsphere_virtual_machine.vm: Destroying... (ID: 422870ff-7786-f80c-44de-8b4743018a0d)
+vsphere_virtual_machine.vm: Still destroying... (ID: 422870ff-7786-f80c-44de-8b4743018a0d, 10s elapsed)
+vsphere_virtual_machine.vm: Still destroying... (ID: 422870ff-7786-f80c-44de-8b4743018a0d, 20s elapsed)
+vsphere_virtual_machine.vm: Destruction complete after 22s
+
+Destroy complete! Resources: 1 destroyed.
 ```
-Now, executing ``terraform apply`` will end off with a success instead. 
 
+There you go! You have succesfully deleted the VM.
 
+## Final Words
+
+I have compiled the configuration that I wrote above into a gist **[here](https://gist.github.com/Physium/83323a8dadc51b3a6d4cbb7ab816dc5c)** so feel free to reference it if needed. You just have tweak the `name` variables according to your environment variables.
+
+I'm defintely looking to explore further into the capabilties of Terraform. There seems to be alot that you do with this and what I have shown is barely just the tip of the iceberg. I see this as a very useful tool where you can design the end to end process of your application build up and manage it in a code like manner. 
+
+If you would like to read more about what I just did you can check the following offical guides/documentaion from Terraform:
+* [Getting Started](https://www.terraform.io/intro/getting-started/install.html)
+* [Terraform's vSphere Documentation](https://www.terraform.io/docs/providers/vsphere/index.html)
+* [Using Infrastructure as Code to Automate VMware Deployments](https://www.hashicorp.com/blog/using-infrastructure-as-code-to-automate-vmware-deployments)
+* [A (Re)-Introduction to the Terraform vSphere Provider](https://www.hashicorp.com/blog/a-re-introduction-to-the-terraform-vsphere-provider)
+
+Here are some of the blogs that I reference from while learning about Terraform:
+* [Deploying a VM w/ Terraform in ESXi without vCenter](https://elatov.github.io/2018/07/use-terraform-to-deploy-a-vm-in-esxi/)
+* [Deploying vSphere VM with Terraform by Emil Wypych](https://emilwypych.com/2017/02/26/deploying-vsphere-vm-with-terraform/)
+* [Terraform with vSphere by vGemba](https://www.vgemba.net/vmware/terraform/Terraform-Part-1/)
+
+This is post was made with Terraform v0.11.10 and Terraform vSphere Provider v1.9.0
