@@ -10,7 +10,7 @@ toc: true
 
 Over the weekend instead of accomplishing my entire TO-DO list, I kinda procastinated and went totally of the track instead. I've have always wanted to check out what this whole **"Infrastructure as a Code"** thing is all about and I have heard quite abit about Terraform being one of the solution that can help achieve this. 
 
-So with Terraform, you can make calls to vSphere to provision VMs without the need of accessing the vSphere/vCenter Client interface. All this is done via writing your own configuration file with Terraform's own configuration language, HCL.
+So with Terraform, you can make calls to vSphere to provision VMs without the need of accessing the vSphere/vCenter Client interface. All this is done via writing your own configuration file with Terraform's own configuration language, HCL. Let's give this a shot!
 
 ## Terraform Installation
 Considering that I'm on macOS, getting Terraform up and running is as easy as:
@@ -485,8 +485,9 @@ There you go! You have succesfully deleted the VM.
 
 I have compiled the configuration that I wrote above into a gist **[here](https://gist.github.com/Physium/83323a8dadc51b3a6d4cbb7ab816dc5c)** so feel free to reference it if needed. You just have tweak the `name` variables according to your environment variables.
 
-I'm defintely looking to explore further into the capabilties of Terraform. There seems to be alot that you do with this and what I have shown is barely just the tip of the iceberg. I see this as a very useful tool where you can design the end to end process of your application build up and manage it in a code like manner. 
+I'm defintely looking to explore further into the capabilties of Terraform. There seems to be alot that you do with this and what I have shown is barely just the tip of the iceberg. With the intergration of configurations management tools (Chef, Puppet, Packer, etc) I see this as a very powerful automation tool where you get to design the entire end to end process of your application and manage it in a code like manner. 
 
+## References
 If you would like to read more about what I just did you can check the following offical guides/documentaion from Terraform:
 * [Getting Started](https://www.terraform.io/intro/getting-started/install.html)
 * [Terraform's vSphere Documentation](https://www.terraform.io/docs/providers/vsphere/index.html)
