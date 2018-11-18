@@ -5,7 +5,6 @@ categories:
 toc: true
 ---
 
-## Background
 When a bunch of us entered the graduate program at VMware, the SEs (System Engineer) specifically were each provided a heavy weight DELL workstation laptop which serves as a single node for us to mess around with the basics of virtualisation. That laptop was a beast and there were a lot we could do for a beginner such as setting up a mini datacenter and gaining a sense of how is it like to navigate around of virtual environment. This was something new to most of us as we all did not have much experience in the infrastructure side of things.
 
 As we started exploring across the VMware portfolio, we realize that majority of the solutions were pretty resource intensive and having a single node simply doesn’t cut it anymore. There are several alternatives that we as VMware employees could actually take advantage off such as signing up for VMware specific courses. But I have to say one of the best learning tool that help me throughout the first year in VMware is the  **[VMWare Hands on Lab](https://labs.hol.vmware.com)** platform. I just want to give out a big shoutout to the VMware Hands on Lab team for creating such an amazing platform which is easily accessible to **ANYONE** for **FREE**! The ability to quickly spin up a live environment where you can explore and learn about a particular solution is simply just awesome.

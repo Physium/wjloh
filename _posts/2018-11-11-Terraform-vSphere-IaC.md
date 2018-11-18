@@ -1,18 +1,49 @@
 ---
 title: "Provisioning VMs on vSphere with Terraform"
 categories: 
-  - IaaC
+  - IaC
 tags:
   - Terraform
   - vSphere
 toc: true
 ---
 
-Over the weekend instead of accomplishing my entire TO-DO list, I kinda procrastinated and went totally of the track instead. I've have always wanted to check out what this whole **"Infrastructure as a Code"** thing is all about and I have heard quite a bit about Terraform being one of the solution that can help achieve this. 
+Over the weekend instead of accomplishing my entire TO-DO list, I kinda procrastinated and went totally of the track instead. I've have always wanted to check out what this whole **"Infrastructure as Code"** hype is all about and I have heard quite the buzz about Terraform being one of the solution that can help achieve this. 
 
-So with Terraform, you can make calls to vSphere to provision VMs without the need of accessing the vSphere/vCenter Client interface. All this is done via writing your own configuration file with Terraform's own configuration language, HCL. Let's give this a shot!
+## What is Infrastructure as Code?
 
-## Terraform Installation
+First lets take a look at the definition,
+
+> Infrastructure as Code (IaC) is a method to provision and manage IT infrastructure through the use of source code, rather than through standard operating procedures and manual processes.
+
+Well, from what I understand its literally what the name says it is. The idea of provisioning and managing your infrastructure via code sounds interesting. But why do that? If we think about it, we are essentially treating our infrastructure like software. This code can help you configure and deploy your infrastructure components quickly and consistently. The ability to automate infrastructure deployment in a repeatable, consistent manner provides many benefits! I will probably leave the specifics of the benefits and why IaC is the future for another day.
+
+### Terra... what?
+
+So with the introduction of Terraform, it basically simplifies the overall process of writing code to provision and manage your infrastructure. As, Terraform comes with its own configuration engine &language known as [HCL](https://github.com/hashicorp/hcl) it helps to mask away a lot of the back-end complexities and simplifies the infrastructure configurations process.
+
+For more information on what Terraform is, feel free to read the official documentation.
+* [What is Terraform?](https://www.terraform.io/intro/index.html)
+* [Use Cases](https://www.terraform.io/intro/use-cases.html)
+
+## Overview
+
+I have segment this tutorial into 3 main sections:
+
+1. [Installing Terraform](#1-terraform-installation)
+2. [Getting Started with Terraform Configuration](#2-getting-started-with-terraform-configurations)
+3. [Executing Terraform Configurations](#3-executing-terraform-configurations)
+
+This way its a lot easier for you to navigate around and jump right into your area of choice. 
+
+At the point where I wrote this post, the software that I used to run my examples are of the following,
+* Terraform v0.11.10
+* Terraform vSphere Provider v1.9.0 
+* vSphere 6.7U1
+
+Now, let's get started!
+
+## 1. Terraform Installation
 Considering that I'm on macOS, getting Terraform up and running is as easy as:
 ```bash
 brew install Terraform
@@ -25,7 +56,7 @@ choco install Terraform
 
 If you do not wish to use a package manager for your installation, please have a look at the offical documentation **[here](https://www.terraform.io/intro/getting-started/install.html)** on how to set up Terraform on your machine.
 
-## Getting Started with Terraform Configurations
+## 2. Getting Started with Terraform Configurations
 
 At the very high level, a typical Terraform configuration consist of the following:
 
@@ -175,7 +206,7 @@ resource "vsphere_virtual_machine" "vm" {
 ```
 Now, executing it will end off with a success instead.
 
-## Executing Terraform Configurations
+## 3. Executing Terraform Configurations
 
 Now, I'll talk about how to execute the configuration files.
 
@@ -498,5 +529,3 @@ Here are some of the blogs that I reference from while learning about Terraform:
 * [Deploying a VM w/ Terraform in ESXi without vCenter](https://elatov.github.io/2018/07/use-terraform-to-deploy-a-vm-in-esxi/)
 * [Deploying vSphere VM with Terraform by Emil Wypych](https://emilwypych.com/2017/02/26/deploying-vsphere-vm-with-terraform/)
 * [Terraform with vSphere by vGemba](https://www.vgemba.net/vmware/terraform/Terraform-Part-1/)
-
-This is post was made with Terraform v0.11.10 and Terraform vSphere Provider v1.9.0
