@@ -65,15 +65,15 @@ At the very high level, a typical Terraform configuration consist of the followi
 * Resources
 * Variables
 
-I've decided to start off with their example configuration template that was provided **[here](https://www.terraform.io/docs/providers/vsphere/index.html#argument-reference)**. This template pretty much covers the basic usage of spinning up a VM in vSphere with Terraform. But there seems to be some missing components that prevents the code from succesfully executing. I will be addressing that along the way.
+I've decided to start off with their example configuration template that was provided **[here](https://www.terraform.io/docs/providers/vsphere/index.html#argument-reference)**. This template pretty much covers the basic usage of spinning up a VM in vSphere with Terraform. But there seems to be some missing components that prevents the code from successfully executing. I will be addressing that along the way.
 
 What I'll do next is that I will breakdown the example into different components and explain what is needed to be done in each configuration block.
 
 ### Setting up the Provider
 
-First lets start of with the **Provider**. The provider component acts as the first step in terms of initializing the entire Terraform setup. Given that Terraform works with a large variety of infrastructure providers be it your public cloud or on-prem offerings, this is where we tell Terraform what provider(s) we are working with for this particular setup. Essentially, the provider is responsible for the understanding API interactions and exposes resources for us.
+First lets start of with the **Provider**. The provider component acts as the first step in terms of initializing the entire Terraform setup. Given that Terraform works with a large variety of infrastructure providers be it your public cloud or on-premise offerings, this is where we tell Terraform what [provider(s)](https://www.terraform.io/docs/providers/index.html) we are working with for this particular setup. Essentially, the provider is responsible for the understanding API interactions and exposes resources for us.
 
-What you need to do here is input your vCenter login credentials and the hostname of the vCenter server. The example showcases the usage of variables but lets skip that for now.
+In this example, we will be using vSphere as the provider. What you need to do here is input your vCenter login credentials and the hostname of the vCenter server. The example also showcases the usage of variables but lets skip that for now.
 
 ```ruby
 provider "vsphere" {
@@ -147,12 +147,12 @@ Upon executing the configuration, I realize that it actually successfully spins 
 
 After a little bit of Googling around, I found out there are 2 ways fix this.
 
-1) I could simply add the following to the resource configuration to tell Terraform to not wait for any IP Address configuration.
+1. I could simply add the following to the resource configuration to tell Terraform to not wait for any IP Address configuration.
 ```ruby
  wait_for_guest_net_timeout = 0
 ```
 
-2) I could clone a VM using a VM template and customize it with a valid routable IP address. With that, I created a simple CentOS VM and converted it to a template.
+2. I could clone a VM using a VM template and customize it with a valid routable IP address. With that, I created a simple CentOS VM and converted it to a template.
 
 Next, I added the following to the configurations:
 * A data source to retrieve the VM template
@@ -514,7 +514,7 @@ There you go! You have successfully deleted the VM.
 
 ## Final Words
 
-I have compiled the configuration that I wrote above into a gist **[here](https://gist.github.com/Physium/83323a8dadc51b3a6d4cbb7ab816dc5c)** so feel free to reference it if needed. You just have tweak the `name` variables according to your environment variables.
+I have compiled the configurations that I wrote above into a gist **[here](https://gist.github.com/Physium/83323a8dadc51b3a6d4cbb7ab816dc5c)** for easier reference. You just have tweak the `name` variables according to your environment variables.
 
 I'm definitely looking to explore further into the capabilities of Terraform. There seems to be a lot that you do with this and what I have shown is barely just the tip of the iceberg. With the integration of configurations management tools (Chef, Puppet, Packer, etc) I see this as a very powerful automation tool where you get to design the entire end to end process of your application and manage it in a code like manner. 
 
