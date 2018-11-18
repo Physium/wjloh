@@ -8,7 +8,7 @@ tags:
 toc: true
 ---
 
-Over the weekend instead of accomplishing my entire TO-DO list, I kinda procastinated and went totally of the track instead. I've have always wanted to check out what this whole **"Infrastructure as a Code"** thing is all about and I have heard quite abit about Terraform being one of the solution that can help achieve this. 
+Over the weekend instead of accomplishing my entire TO-DO list, I kinda procrastinated and went totally of the track instead. I've have always wanted to check out what this whole **"Infrastructure as a Code"** thing is all about and I have heard quite a bit about Terraform being one of the solution that can help achieve this. 
 
 So with Terraform, you can make calls to vSphere to provision VMs without the need of accessing the vSphere/vCenter Client interface. All this is done via writing your own configuration file with Terraform's own configuration language, HCL. Let's give this a shot!
 
@@ -23,7 +23,7 @@ If you are on Windows, I believe Windows now has a package manager called **[Cho
 choco install Terraform
 ```
 
-If you do not wish to use a package manager for your installion, please have a look at the offical documentation **[here](https://www.terraform.io/intro/getting-started/install.html)** on how to set up Terraform on your machine.
+If you do not wish to use a package manager for your installation, please have a look at the offical documentation **[here](https://www.terraform.io/intro/getting-started/install.html)** on how to set up Terraform on your machine.
 
 ## Getting Started with Terraform Configurations
 
@@ -40,9 +40,9 @@ What I'll do next is that I will breakdown the example into different components
 
 ### Setting up the Provider
 
-First lets start of with the **Provider**. The provider component acts as the first step in terms of initalizing the entire Terraform setup. Given that Terraform works with a large variety of infrastrucutre providers be it your public cloud or on-prem offerings, this is where we tell Terraform what provider(s) are we working with for this particular setup. Essentially, the provider is responsible for the understanding API interactions and exposes resources for us.
+First lets start of with the **Provider**. The provider component acts as the first step in terms of initializing the entire Terraform setup. Given that Terraform works with a large variety of infrastructure providers be it your public cloud or on-prem offerings, this is where we tell Terraform what provider(s) we are working with for this particular setup. Essentially, the provider is responsible for the understanding API interactions and exposes resources for us.
 
-What you need to do here is input your vCenter login credentials and the hostname of the vCenter server. The example showcase the usage of variables but lets skip that for now.
+What you need to do here is input your vCenter login credentials and the hostname of the vCenter server. The example showcases the usage of variables but lets skip that for now.
 
 ```ruby
 provider "vsphere" {
@@ -59,7 +59,7 @@ provider "vsphere" {
 
 >*Data sources* allows data to be fetched or computed for use elsewhere in Terraform configuration. Use of data sources allows a Terraform configuration to build on information defined outside of Terraform, or defined by another separate Terraform configuration.
 
-Essentially, this is how we fetch vSphere related information from our environment and define it at as a data source object which will then be use as part of the VM resource configuration.
+Essentially, this is how we fetch vSphere related information from our environment and define it at as a data source object which will then be used as part of the VM resource configuration.
 
 What we do here is change the **name** parameter to the name of our resources that is set within our environment.
 ```ruby
@@ -87,7 +87,7 @@ data "vsphere_network" "network" {
 
 >*Resources* are a component of your infrastructure. It might be some low level component such as a physical server, virtual machine, or container. Or it can be a higher level component such as an email provider, DNS record, or database provider.
 
-This segment here declares the type of resource you want to create, in this case its a VM. There are several configurations with regards to the VM that you can set. What is shown below is the minimum required to get a VM up and runninng. For more information on what can be configured, refer to the full documentation of the **vsphere_virtural_machine** **[here](https://www.terraform.io/docs/providers/vsphere/r/virtual_machine.html)**.
+This segment here declares the type of resource you want to create, in this case its a VM. There are several configurations with regards to the VM that you can set. What is shown below is the minimum required to get a VM up and running. For more information on what can be configured, refer to the full documentation of the ``vsphere_virtural_machine`` **[here](https://www.terraform.io/docs/providers/vsphere/r/virtual_machine.html)**.
 
 ```ruby
 resource "vsphere_virtual_machine" "vm" {
@@ -112,16 +112,16 @@ resource "vsphere_virtual_machine" "vm" {
 
 ### Troubleshooting
 
-Upon executing the configuration, I realise that it actually succesfully spins up the VM in my vCenter. However, in the terminal it's stuck in this never ending loop of *'Still Creating...'* which was very puzzling. What I found out was that it was trying to make a connection to the VM and since there wasnt any OS or IP Address in the VM, it kept waiting for the VM to be assigned a connection till it timeout. For more information on this, you can read about it **[here](https://www.terraform.io/docs/providers/vsphere/r/virtual_machine.html#customization-and-network-waiters)**.
+Upon executing the configuration, I realize that it actually successfully spins up the VM in my vCenter. However, in the terminal it's stuck in this never ending loop of *'Still Creating...'* which was very puzzling. What I found out was that it was trying to make a connection to the VM and since there wasn't any OS or IP Address in the VM, it kept waiting for the VM to be assigned a connection till it timeout. For more information on this, you can read about it **[here](https://www.terraform.io/docs/providers/vsphere/r/virtual_machine.html#customization-and-network-waiters)**.
 
-After a little bit of googling around, I found out there are 2 ways fix this.
+After a little bit of Googling around, I found out there are 2 ways fix this.
 
 1) I could simply add the following to the resource configuration to tell Terraform to not wait for any IP Address configuration.
 ```ruby
  wait_for_guest_net_timeout = 0
 ```
 
-2) I could clone a VM using a VM template and customize it with a valid routable IP address. With that, I created a simple CentOS VM and converted it to a temaplate.
+2) I could clone a VM using a VM template and customize it with a valid routable IP address. With that, I created a simple CentOS VM and converted it to a template.
 
 Next, I added the following to the configurations:
 * A data source to retrieve the VM template
@@ -185,11 +185,11 @@ The lifecycle of running and managing Terraform configurations comes in 4 parts.
 * apply
 * destroy
 
-### Initalizing Terraform
+### Initializing Terraform
 
-We first start off by running ``terraform init`` . Terraform will proceed to initalize the provider(s) which you have indicated in your configuration file. 
+We first start off by running ``terraform init`` . Terraform will proceed to initialize the provider(s) which you have indicated in your configuration file. 
 
-The following is an example output which confirms that the initailization has successfully taken place.
+The following is an example output which confirms that the initialization has successfully taken place.
 
 ```bash
 $ terraform init
@@ -329,7 +329,7 @@ can't guarantee that exactly these actions will be performed if
 
 ### Terraform Apply
 
-Once you have confirm on the configurations as shown in ``terraform plan``, the next step would be to apply the configurations and spin up the resource!
+Once you have confirmed on the configurations as shown in ``terraform plan``, the next step would be to apply the configurations and spin up the resource!
 
 ```bash
 $ terraform apply
@@ -479,16 +479,16 @@ vsphere_virtual_machine.vm: Destruction complete after 22s
 Destroy complete! Resources: 1 destroyed.
 ```
 
-There you go! You have succesfully deleted the VM.
+There you go! You have successfully deleted the VM.
 
 ## Final Words
 
 I have compiled the configuration that I wrote above into a gist **[here](https://gist.github.com/Physium/83323a8dadc51b3a6d4cbb7ab816dc5c)** so feel free to reference it if needed. You just have tweak the `name` variables according to your environment variables.
 
-I'm defintely looking to explore further into the capabilties of Terraform. There seems to be alot that you do with this and what I have shown is barely just the tip of the iceberg. With the intergration of configurations management tools (Chef, Puppet, Packer, etc) I see this as a very powerful automation tool where you get to design the entire end to end process of your application and manage it in a code like manner. 
+I'm definitely looking to explore further into the capabilities of Terraform. There seems to be a lot that you do with this and what I have shown is barely just the tip of the iceberg. With the integration of configurations management tools (Chef, Puppet, Packer, etc) I see this as a very powerful automation tool where you get to design the entire end to end process of your application and manage it in a code like manner. 
 
 ## References
-If you would like to read more about what I just did you can check the following offical guides/documentaion from Terraform:
+If you would like to read more about what I just did you can check the following official guides/documentation from Terraform:
 * [Getting Started](https://www.terraform.io/intro/getting-started/install.html)
 * [Terraform's vSphere Documentation](https://www.terraform.io/docs/providers/vsphere/index.html)
 * [Using Infrastructure as Code to Automate VMware Deployments](https://www.hashicorp.com/blog/using-infrastructure-as-code-to-automate-vmware-deployments)

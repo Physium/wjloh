@@ -12,4 +12,4 @@ Hello! My name is Wei Jun, a Pre Sales Engineer from Singapore currently working
 During my free time, I enjoy keeping up-to-date with all sorts of technology. I still have a soft spot when it comes to writing code from time to time as I have always like the idea of building something from ground zero. Technology aside, I'm a huge fan of eSports where I mainly follow the Dota 2 competitive scene.
 
 ## Disclaimer
-All content shared are of my own, and not a reflection and/or endorsement of the organisation I work for.
+All content shared are of my own, and not a reflection and/or endorsement of the organization I work for.
