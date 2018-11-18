@@ -20,9 +20,9 @@ Well, from what I understand its literally what the name says it is. The idea of
 
 ### Terra... what?
 
-So with the introduction of Terraform, it basically simplifies the overall process of writing code to provision and manage your infrastructure. As, Terraform comes with its own configuration engine &language known as [HCL](https://github.com/hashicorp/hcl) it helps to mask away a lot of the back-end complexities and simplifies the infrastructure configurations process.
+So with the introduction of Terraform, it basically simplifies the overall process of writing code to provision and manage your infrastructure. As Terraform comes with its own configuration engine & language known as [HCL](https://github.com/hashicorp/hcl), it helps to mask away a lot of the back-end complexities and simplifies the infrastructure configurations process.
 
-For more information on what Terraform is, feel free to read the official documentation.
+For more information on what Terraform is, checkout the official documentation.
 * [What is Terraform?](https://www.terraform.io/intro/index.html)
 * [Use Cases](https://www.terraform.io/intro/use-cases.html)
 
@@ -36,12 +36,12 @@ I have segment this tutorial into 3 main sections:
 
 This way its a lot easier for you to navigate around and jump right into your area of choice. 
 
-At the point where I wrote this post, the software that I used to run my examples are of the following,
+At the point where I wrote this post, the software that I used to run the examples are of the following:
 * Terraform v0.11.10
 * Terraform vSphere Provider v1.9.0 
 * vSphere 6.7U1
 
-Now, let's get started!
+**Now, let's get started!**
 
 ## 1. Terraform Installation
 Considering that I'm on macOS, getting Terraform up and running is as easy as:
@@ -73,7 +73,7 @@ What I'll do next is that I will breakdown the example into different components
 
 First lets start of with the **Provider**. The provider component acts as the first step in terms of initializing the entire Terraform setup. Given that Terraform works with a large variety of infrastructure providers be it your public cloud or on-premise offerings, this is where we tell Terraform what [provider(s)](https://www.terraform.io/docs/providers/index.html) we are working with for this particular setup. Essentially, the provider is responsible for the understanding API interactions and exposes resources for us.
 
-In this example, we will be using vSphere as the provider. What you need to do here is input your vCenter login credentials and the hostname of the vCenter server. The example also showcases the usage of variables but lets skip that for now.
+In this example, we will be using [vSphere as the provider](https://www.terraform.io/docs/providers/vsphere/index.html). What you need to do here is input your vCenter login credentials and the hostname of the vCenter server. The example also showcases the usage of variables but lets skip that for now.
 
 ```ruby
 provider "vsphere" {
@@ -516,7 +516,7 @@ There you go! You have successfully deleted the VM.
 
 I have compiled the configurations that I wrote above into a gist **[here](https://gist.github.com/Physium/83323a8dadc51b3a6d4cbb7ab816dc5c)** for easier reference. You just have tweak the `name` variables according to your environment variables.
 
-I'm definitely looking to explore further into the capabilities of Terraform. There seems to be a lot that you do with this and what I have shown is barely just the tip of the iceberg. With the integration of configurations management tools (Chef, Puppet, Packer, etc) I see this as a very powerful automation tool where you get to design the entire end to end process of your application and manage it in a code like manner. 
+I'm definitely looking to explore further into the capabilities of Terraform. There seems to be a lot that you do with this and what I have shown is barely just the tip of the iceberg. With the integration of configurations management tools (Chef, Puppet, Packer, etc) I see this as a very powerful automation tool where you get to design and blueprint the entire end to end process of your application in a code like manner.
 
 ## References
 If you would like to read more about what I just did you can check the following official guides/documentation from Terraform:
