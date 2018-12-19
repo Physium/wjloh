@@ -75,26 +75,41 @@ The Cloud Foundation Builder VM is basically a virtual appliance (.ova) that can
 
 #### 2. Fill up the configuration excel sheet
 
-Once the Cloud Foundation Builder VM is deployed, you can access the appliance via a web browser with the IP that you have assigned. This should bring you to a welcome page where you can proceed to log in and download the **"Deployment Parameter Sheet"**. Do note that the **"Deployment Parameter Sheet"** tend to receive changes every version so its of best interest that you obtain the sheet from the appliance VM itself to ensure compatibility.
+Once the Cloud Foundation Builder VM is deployed, you can access the appliance via a web browser with the IP that you have assigned. This should bring you to a welcome page where you can proceed to log in and download the **"Deployment Parameter Sheet"**. 
 
-[![Welcome](/assets/images/vcf/deploy/welcome.jpg "welcome"){: .full}](/assets/images/vcf/deploy/welcome.jpg)
+Do note that the **"Deployment Parameter Sheet"** tend to receive changes every version so its of best interest that you obtain the sheet from the appliance VM itself to ensure compatibility.
+
+<figure class="align-center">
+  <a href="/assets/images/vcf/deploy/welcome.jpg"><img src="/assets/images/vcf/deploy/welcome.jpg" alt="Welcome"></a>
+  <figcaption style="text-align: center;">Deployment Parameter Sheet Download Page</figcaption>
+</figure> 
+
 
 #### 3. Validate Excel Sheet Configurations
 
 This is a time where it puts all the preparation work that you have done to the test. The validation tool will be able to tell if the configurations that you have inputed into the file tallies to whatever that you have set up beforehand. If there are issues, it will be flagged out with the appropriate error messages and you can then proceed to fix the issue and re-run the validation again. 
 
-Below is a screenshot of a successfully validated setup.
-[![Config Validation](/assets/images/vcf/deploy/configuration-valid.jpg "Config Validation"){: .full}](/assets/images/vcf/deploy/configuration-valid.jpg)
+<figure class="align-center">
+  <a href="/assets/images/vcf/deploy/configuration-valid.jpg"><img src="/assets/images/vcf/deploy/configuration-valid.jpg" alt="Config Validation"></a>
+  <figcaption style="text-align: center;">Successful Validated Configurations</figcaption>
+</figure> 
 
 #### 4. Sit Back and Relax!
 
-Now that the configurations have been successfully validated, you may now click 'Next' and watch the entire setup take place. Do note there may be errors along the way due to configurations issues and its best to monitor it time to time to ensure the setup takes place.
+Now that the configurations have been successfully validated, you may now click 'Next' and watch the entire setup take place. Do note there may be errors along the way due to configurations issues and its best to monitor it time to time to ensure the setup takes place. If all goes well, you should see something similar to the screenshot shown below.
 
-Below is a screenshot of a successful SDDC setup.
-[![SDDC Success](/assets/images/vcf/deploy/sddc-success.png "SDDC Success"){: .full}](/assets/images/vcf/deploy/sddc-success.png)
+<figure class="align-center">
+  <a href="/assets/images/vcf/deploy/sddc-success.png"><img src="/assets/images/vcf/deploy/sddc-success.png" alt="SDDC Success"></a>
+  <figcaption style="text-align: center;">Successful SDDC Setup</figcaption>
+</figure> 
 
-**Congrats!** You now have a full SDDC stack up and running!
-[![SDDC Manager](/assets/images/vcf/deploy/sddc-manager.png "SDDC Manager"){: .full}](/assets/images/vcf/deploy/sddc-manager.png)
+You may now login to the SDDC Manger with the URL that you have configured in the excel sheet. Upon login, it should bring you to the SDDC Manager dashboard page.
+
+<figure class="align-center">
+  <a href="/assets/images/vcf/deploy/sddc-manager.png"><img src="/assets/images/vcf/deploy/sddc-manager.png" alt="SDDC Manager"></a>
+  <figcaption style="text-align: center;">SDDC Manager Dashboard</figcaption>
+</figure> 
+
 
 Documentation to this section can be found [here](https://docs.vmware.com/en/VMware-Cloud-Foundation/3.0.1/com.vmware.vcf.ovdeploy.doc_301/GUID-F2DCF1B2-4EF6-444E-80BA-8F529A6D0725.html). 
 
@@ -134,7 +149,7 @@ During the bring up process, there was an error with regards to setting up vSAN.
 
 [![vSAN Error](/assets/images/vcf/vsanerror.jpg "vSAN Error"){: .full}](/assets/images/vcf/vsanerror.png)
 
-We actually took the logs to the engineering team and found out that it was due to a really stupid mistake made in the **"Deployment Parameter Sheet"**. During the naming of the vSAN datastore we named the datastore "vSAN Datastore" which consisted of a space and that spacing was causing issue. Once we remove the space everything ran as expected. So do take note of using spaces for names in general.
+We actually took the logs to the engineering team and found out that it was due to a really stupid mistake made in the **"Deployment Parameter Sheet"**. During the naming of the vSAN datastore we named the datastore "vSAN Datastore" which consisted of a space and that spacing was causing issue.Once we remove the space everything ran as expected. So do take note of using spaces for names in general.
 
 
 ## Final Words
