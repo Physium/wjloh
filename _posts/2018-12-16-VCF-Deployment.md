@@ -8,7 +8,9 @@ tags:
 toc: true
 ---
 
-Its been awhile since I last posted. After much procrastination, I decided to set aside some time during this short December break of mine to write about this topic. Recently, I was given an opportunity to help up with the set up of VCF (VMware Cloud Foundation). There has been much talks about how VCF becomes the foundation of SDDC and how it to work across the different cloud offerings creating a seamless hybrid approach. This sits in well with the recent collaboration announcements of VMware and AWS where VCF will be used as the foundation for public cloud offerings in particular [VMware on AWS](https://cloud.vmware.com/vmc-aws) and [AWS outpost](https://aws.amazon.com/outposts/). I was truly excited as I could never try it on my homelab due to hardware and resources constraints.
+Its been awhile since I last posted. After much procrastination, I decided to set aside some time during this short December break of mine to write about this topic. 
+
+Recently, I was given an opportunity to help up with the set up of VCF (VMware Cloud Foundation). There has been much talks about how VCF becomes the foundation of SDDC and how it to work across the different cloud offerings creating a seamless hybrid approach. This sits in well with the recent collaboration announcements of VMware and AWS where VCF will be used as the foundation for public cloud offerings in particular [VMware on AWS](https://cloud.vmware.com/vmc-aws) and [AWS outpost](https://aws.amazon.com/outposts/). I was truly excited as I could never try it on my homelab due to hardware and resources constraints.
 
 
 ## What is VCF?
@@ -20,13 +22,13 @@ infrastructure that can be can deployed on premises and consumed as a service fr
 
 Essentially, VCF is an integrated software stack that uses SDDC Manager which is an automated life-cycle management tool to bundle compute (vSphere), storage(vSAN) and network visualization(NSX) into a single platform that can be deployed on premises as a private cloud or run as a service within a public cloud. It fundamentally tries to solve the traditional issues of data centers silos by merging the 3 components together making it easy not only for day one but for day two as well.
 
-Feel free to check out the [product page](https://www.vmware.com/sg/products/cloud-foundation.html) for more info!
+Do check out the [product page](https://www.vmware.com/sg/products/cloud-foundation.html) for more info!
 
 ## Deploying SDDC w/ VCF
 
 For a start, I'd like to drop a disclaimer on what I will be sharing. A lot of what is being shared below is based on my own personal experience and I may have miss out or not include everything there is when it comes to deploying VCF. Content within this blog post is done with VCF 3.0.x and from what I understand VCF 3.5.x has very recently been GA'ed.
 
-As such, I think it's important to check out the official VCF [documentation](https://docs.vmware.com/en/VMware-Cloud-Foundation/index.html) based on the type of version you are deploying as it may varies. I personally think that the VCF documentation is well documented as it covers all the way from the planning and preparation to the life-cycle management and day 2 operations of the environment. 
+As such, I think it's important to check out the official VCF [documentation](https://docs.vmware.com/en/VMware-Cloud-Foundation/index.html) based on the type of version you are deploying as it may varies. I personally think that the VCF documentation is well documented as it covers all the way from the planning and preparation to the life-cycle management and day 2 operations. 
 
 In this blog, I'll be focusing mainly on the SDDC bring up process with VCF which consist of the following:
 1. [Planning & Preparation](#planning--preparationn)
@@ -45,7 +47,7 @@ There are 2 main architecture designs for for VCF
 * [Standard Architecture Model](https://docs.vmware.com/en/VMware-Cloud-Foundation/3.5/com.vmware.vcf.ovdeploy.doc_35/GUID-6C75E7C7-AC9A-41A4-A5D8-AC85BAD4FC1F.html)
 * [Consolidated Architecture Model](https://docs.vmware.com/en/VMware-Cloud-Foundation/3.5/com.vmware.vcf.ovdeploy.doc_35/GUID-61453C12-3BB8-4C2A-A895-A1A805931BB2.html)
 
-I believe that the main decision criteria choosing between standard or consolidated would be the number of hosts you have. Its recommended that if you have lesser then 6 hosts is best you go with a consolidated model. But not to worry, as you can shift to a standard model anytime when you see the need to scale.
+I believe that the main decision criteria choosing between standard or consolidated would be the number of hosts you have. It's recommended that if you have lesser then 6 hosts is best you go with a consolidated model. But not to worry, as you can shift to a standard model anytime when you see the need to scale.
 
 ### Deployment
 
@@ -73,13 +75,13 @@ The Cloud Foundation Builder VM is basically a virtual appliance (.ova) that can
 
 #### 2. Fill up the configuration excel sheet
 
-Once the Cloud Foundation Builder VM is deployed, you can access the appliance via a web browser with the IP that you have assigned. This should bring you to a welcome page where you can proceed to log in and download the 'Deployment Parameter Sheet'. Do note that the 'Deployment Parameter Sheet' tend to receive changes every version so its of best interest that you obtain the sheet from the appliance VM itself to ensure compatibility.
+Once the Cloud Foundation Builder VM is deployed, you can access the appliance via a web browser with the IP that you have assigned. This should bring you to a welcome page where you can proceed to log in and download the **"Deployment Parameter Sheet"**. Do note that the **"Deployment Parameter Sheet"** tend to receive changes every version so its of best interest that you obtain the sheet from the appliance VM itself to ensure compatibility.
 
 [![Welcome](/assets/images/vcf/deploy/welcome.jpg "welcome"){: .full}](/assets/images/vcf/deploy/welcome.jpg)
 
 #### 3. Validate Excel Sheet Configurations
 
-This is a time where it puts all the preparation work that you have done in beforehand to the test. The validation tool will be able to tell if the configurations that you have inputed into the file tally to whatever that you have set up beforehand. If there are issues, it will be flagged out with the appropriate error messages and you can then proceed to fix the issue and re-run the validation again. 
+This is a time where it puts all the preparation work that you have done to the test. The validation tool will be able to tell if the configurations that you have inputed into the file tallies to whatever that you have set up beforehand. If there are issues, it will be flagged out with the appropriate error messages and you can then proceed to fix the issue and re-run the validation again. 
 
 Below is a screenshot of a successfully validated setup.
 [![Config Validation](/assets/images/vcf/deploy/configuration-valid.jpg "Config Validation"){: .full}](/assets/images/vcf/deploy/configuration-valid.jpg)
@@ -111,7 +113,9 @@ Make sure NTP is properly sync'ed across all hosts and most importantly your Clo
 - For the Cloud Foundation Builder VM, the NTP service should sync with the NTP server that you have configured during the set up. However, I have face issues where the NTP is way off. I manage to fix via restarting the NTP service of the appliance by entering either through the appliance or via ssh and running the command ``systemctl restart ntpd``. Follow this up by restarting the appliance VM and the NTP should sync up perfectly.  
 
 ### Password Complexity
-Passwords used for all components have to been to be "Strong". It is mention in the documentation that all password used must be a minimum of 8 characters and include at least one uppercase, one lowercase, one digit, and one special character. A great example would be the VMware's default password of "VMware1!".
+Passwords used for all components have to been to be "Strong". It is mention in the documentation that all password used must be a minimum of 8 characters and include at least one uppercase, one lowercase, one digit, and one special character. 
+
+A great example would be the VMware's default password of **"VMware1!"**.
 
 ### Network
 - Do note that there should be only 2 physical NIC cards presented to the host as VCF 3.0.x currently only supports 2 physical NIC's per ESXi Host and plus one BMC NIC for out-of-band host management. for each host where there must be at least 1 left unassigned to be used for VDS during the setup.
@@ -122,19 +126,21 @@ Passwords used for all components have to been to be "Strong". It is mention in 
 
 ### vSAN
 
-One major thing about vSAN to take note is to ensure that your caching and capacity disk are eligible for vSAN. Do use the ``vdq -q`` command on the ESXi host to check if the respective disk identifiers displays "Eligible for vSAN". If you are keen to know more about this vdq command you can check out this post [here](https://www.virtuallyghetto.com/2014/02/vdq-useful-little-vsan-utility.html) by William Lam.
+One major thing about vSAN to take note is to ensure that your caching and capacity disk are eligible for vSAN. Do use the ``vdq -q`` command on the ESXi host to check if the respective disk identifiers displays "Eligible for vSAN". 
+
+If you are keen to know more about this ``vdq`` command you can check out this post [here](https://www.virtuallyghetto.com/2014/02/vdq-useful-little-vsan-utility.html) by William Lam.
 
 During the bring up process, there was an error with regards to setting up vSAN. It complained that it was unable to delete partitions on the host which was very puzzling as the disks within the host was cleared and ``vdq -q`` commands was showing the respective disks meant for vSAN as "Eligible for vSAN".
 
 [![vSAN Error](/assets/images/vcf/vsanerror.jpg "vSAN Error"){: .full}](/assets/images/vcf/vsanerror.png)
 
-We actually took the logs and to the engineering team and found out that it was due to a really stupid mistake made in the Deployment sheet where the name of the vSAN datastore consisted a space. *FACEPLAM*. Once we remove the space everything ran as expected. So do take note of using spaces for names in general.
+We actually took the logs to the engineering team and found out that it was due to a really stupid mistake made in the **"Deployment Parameter Sheet"**. During the naming of the vSAN datastore we named the datastore "vSAN Datastore" which consisted of a space and that spacing was causing issue. Once we remove the space everything ran as expected. So do take note of using spaces for names in general.
 
 
 ## Final Words
 
 There are a couple more stuff that I would like to follow up with on this VCF set up such as:
-- commission/decommission host
+- Commission/Decommission host
 - Expanding the workload domain
 - Bringing up the VI workload domain
 - Patching with SDDC Manager
