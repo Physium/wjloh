@@ -1,5 +1,5 @@
 ---
-title: "AWS Certified, Happy New Year, New Financial Year & More!"
+title: "AWS Certified, New Year, New Financial Year, New Goals!"
 categories: 
   - General
 tags:
@@ -9,7 +9,7 @@ tags:
 
 First off, I would like to start off by wishing everyone a Happy (Lunar) New Year. It's been awhile since I last posted and I thought it would be nice to write about whats been going on the past couple of months. As I mentioned in the previous post, during December I had a short break from work before the New Year starts. Aside from resting, I decided to also take this opportunity to catch up with technologies such as AWS, Dockers and Kubernetes. 
 
-So why these technologies? As you probably know by now, over the past year VMmware as a company have been putting heavy focus around these areas of technologies. With the recent additions of companies like [Pivotal](https://pivotal.io/) and [Hepito](https://heptio.com/), it shows that VMware is serious about providing customers a platform where they can deliver Cloud Native Application with ease. And of course, I am not going to miss out on one of the biggest partnership announcement that VMware made with AWS! This partnership literally changes the way how VMware as a company can provide a full suite of cloud offerings to its customers. 
+So why these technologies? As you probably know by now, over the past year VMmware as a company have been putting heavy focus around these areas of technologies. With the recent additions of companies like [Pivotal](https://pivotal.io/) and [Hepito](https://heptio.com/), it shows that VMware is serious about providing customers a platform where they can deliver Cloud Native Application with ease. And of course, I am not going to miss out on one of the biggest partnership announcement that VMware made with AWS! This [partnership](https://www.vmware.com/sg/partners/strategic-technology-partners/aws.html) literally changes the way how VMware as a company can provide a full suite of cloud offerings to its customers. 
 
 I feel that its only right that I get myself equipped with the right knowledge in order to share with customers on how these technological trends will eventually affect them.
 
@@ -32,7 +32,7 @@ In addition to those, here are a few additional study resources that I refer to:
 
 ## New Year, New Financial Year, New Goals!
 
-So now that FY19 has finally come to an end, looking back at the past year I must say it has been pretty amazing. It's crazy how time flies and now I have officially spent a full Financial Year as a VMware employee. I experience how fast the company grew not only in termms of its profit but also its technology stack with all the different technology acquisitions and collaborations. All I can say is I am simply excited at what is to come this year. 
+So now that FY19 has finally come to an end, looking back at the past year I must say it has been pretty amazing. It's crazy how time flies and now I have officially spent a full Financial Year as a VMware employee. I experience how fast the company grew not only in terms of its profit but also its technology stack with all the different technology acquisitions and collaborations. All I can say is I am simply excited at what is to come this year. 
 
 One of my main goal this year is mainly to delve deeper into the Cloud Native Applications side of things. As technology progresses, people are constantly changing the way how applications is being developed and delivered in order to meet business demands. So feel free to join me on this journey as I will definitely be blogging about my experience.
 
