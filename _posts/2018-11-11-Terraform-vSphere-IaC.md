@@ -514,7 +514,11 @@ There you go! You have successfully deleted the VM.
 
 ## Final Words
 
-I have compiled the configurations that I wrote above into a gist **[here](https://gist.github.com/Physium/83323a8dadc51b3a6d4cbb7ab816dc5c)** for easier reference. You just have tweak the `name` variables according to your environment variables.
+I have compiled the configurations that I wrote above into a gist for easier reference. 
+
+<script src="https://gist.github.com/Physium/83323a8dadc51b3a6d4cbb7ab816dc5c.js"></script>
+
+You just have tweak the `name` variables according to your environment variables.
 
 I'm definitely looking to explore further into the capabilities of Terraform. There seems to be a lot that you do with this and what I have shown is barely just the tip of the iceberg. With the integration of configurations management tools (Chef, Puppet, Packer, etc) I see this as a very powerful automation tool where you get to design and blueprint the entire end to end process of your application in a code like manner.
 

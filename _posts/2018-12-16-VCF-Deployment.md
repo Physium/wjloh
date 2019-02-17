@@ -10,7 +10,7 @@ toc: true
 
 Its been awhile since I last posted. After much procrastination, I decided to set aside some time during this short December break of mine to write about this topic. 
 
-Recently, I was given an opportunity to help up with the set up of VCF (VMware Cloud Foundation). There has been much talks about how VCF becomes the foundation of SDDC and how it to work across the different cloud offerings creating a seamless hybrid approach. This sits in well with the recent collaboration announcements of VMware and AWS where VCF will be used as the foundation for public cloud offerings in particular [VMware on AWS](https://cloud.vmware.com/vmc-aws) and [AWS outpost](https://aws.amazon.com/outposts/). I was truly excited as I could never try it on my homelab due to hardware and resources constraints.
+Recently, I was given an opportunity to help up with the set up of VCF (VMware Cloud Foundation). There has been much talks about how VCF becomes the foundation of SDDC and how it to work across the different cloud offerings creating a seamless hybrid approach. This sits in well with the recent collaboration announcements of VMware and AWS where VCF will be used as the foundation for public cloud offerings in particular [VMware on AWS](https://cloud.vmware.com/vmc-aws) and [AWS outpost](https://aws.amazon.com/outposts/). I was truly excited as I could never try it on my homelab due to hardware and resource constraints.
 
 
 ## What is VCF?
@@ -36,7 +36,7 @@ In this blog, I'll be focusing mainly on the SDDC bring up process with VCF whic
 
 ## Planning & Preparation
 
-The entire bring up process with VCF is actually pretty straightforward. In order for that to happen, it's important that we get the necessary preparation work done in order for the Cloud Foundation Builder VM to work its magic. I wont go into the details of that as there's an entire documentation on the planning and preparation required for the setup to take place. I would strongly suggest using that as a check list to ensure everything is in place before going ahead with the deployment.
+The entire bring up process with VCF is actually pretty straightforward. In order for that to happen, it's important that we get the necessary preparation work done in order for the Cloud Foundation Builder VM to work its magic. I personally wont go into the details of that as there's an entire documentation on the planning and preparation required for the setup to take place. I would strongly suggest using that as a check list to ensure everything is in place before going ahead with the deployment.
 
 Documentation mentioned in this section can be found [here](https://docs.vmware.com/en/VMware-Cloud-Foundation/3.0.1/com.vmware.vcf.planprep.doc_301/GUID-BFF8C3AE-6C42-4133-AACA-00BE0C02B722.html)!
 
@@ -134,9 +134,7 @@ A great example would be the VMware's default password of **"VMware1!"**.
 
 ### Network
 - Do note that there should be only 2 physical NIC cards presented to the host as VCF 3.0.x currently only supports 2 physical NIC's per ESXi Host and plus one BMC NIC for out-of-band host management. for each host where there must be at least 1 left unassigned to be used for VDS during the setup.
-
 - Ensure that one physical NIC is configured and connected to the vSphere standard switch while leaving the second physical NIC untouched.
-
 - Network should be able to handle jumbo frames connectivity. Use the vmkping command to test. For example. ``vmkping -I vmkX x.x.x.x -d -s 1600``
 
 ### vSAN
@@ -149,7 +147,7 @@ During the bring up process, there was an error with regards to setting up vSAN.
 
 [![vSAN Error](/assets/images/vcf/vsanerror.jpg "vSAN Error"){: .full}](/assets/images/vcf/vsanerror.png)
 
-We actually took the logs to the engineering team and found out that it was due to a really stupid mistake made in the **"Deployment Parameter Sheet"**. During the naming of the vSAN datastore we named the datastore "vSAN Datastore" which consisted of a space and that spacing was causing issue.Once we remove the space everything ran as expected. So do take note of using spaces for names in general.
+We actually took the logs to the engineering team and found out that it was due to a really stupid mistake made in the **"Deployment Parameter Sheet"**. During the naming of the vSAN datastore we named the datastore "vSAN Datastore" which consisted of a space and that spacing was causing issue. Once we remove the space everything ran as expected. So do take note of using spaces for names in general.
 
 
 ## Final Words
