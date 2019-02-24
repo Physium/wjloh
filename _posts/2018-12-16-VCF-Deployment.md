@@ -63,7 +63,7 @@ The Cloud Foundation Builder VM is basically a virtual appliance (.ova) that can
 * The virtual appliance requires 4 vCPU, 4 GB of Memory, and 350 GB of Storage.
 * The virtual appliance must be deployed on a suitable platform. This can be on a laptop running VMware Workstation or VMware Fusion or on a dedicated ESXi Host. Its import to note that the virtual appliance must have access to all hosts on the management network.
 * The virtual appliance require the following settings during the setup:
-	* IP Address
+  * IP Address
 	* Subnet Mask
 	* Default Gateway
 	* Hostname
