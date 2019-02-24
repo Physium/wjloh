@@ -7,30 +7,30 @@ tags:
   - Troubleshooting
 ---
 
-2 weeks or so, I had to opportunity to help a customer to carry out an NSX-T upgrade. Apparently, this was suppose to be a straightforward and simple task as the entire process is simplified via automation. All we have to do is download the 'NSX-T 2.3.1 Upgrade Bundle' and upload it to the NSX Manager to let it work its magic.
+2 weeks or so, I had to opportunity to help a customer out upgrading its NSX-T environment from 2.3 to 2.3.1. Apparently, this was suppose to be a straightforward and simple task as the entire process is simplified via automation. All we have to do is download the 'NSX-T 2.3.1 Upgrade Bundle' and upload it to the NSX Manager to let it work its magic.
 
-Unfortunately, this upgrade process took us a good 5 - 6 solid man hours just to get it done. Along the way, we faced a couple errors in the host and controller section of the upgrade. Therefore, I would just like to take this opportunity to share some of the we faced and how we eventually overcome it.
+Unfortunately, this upgrade process took us a good 5 - 6 solid man hours just to get it done. Along the way, we faced a couple errors in the **host** and **controller** section of the upgrade. Therefore, I would just like to take this opportunity to share some of the issues we faced and how we eventually overcome it.
 
-I wont be going through the update process in this post. As such you may refer to the following documentation/guide for some reference:
+I wont be going through the update process in this post as I believe there are lots of resource out there documenting the entire process down (Honestly, its not difficult at all either). As such you may refer to the following documentation/guide for some reference:
 - [VMware's NSX-T Official Documentation](https://docs.vmware.com/en/VMware-NSX-T-Data-Center/2.3/com.vmware.nsxt.upgrade.doc/GUID-E04242D7-EF09-4601-8906-3FA77FBB06BD.html)
 - [NSX-T 2.3 to 2.3.1 Upgrade Guide by Keith Lee](http://keithlee.ie/2018/12/24/upgrade-nsx-t-from-2-3-to-2-3-1/)
 
 ## Host
 The host errors were pretty straightforward. It took us awhile to realize that the host were not booting up as planned during the upgrade process. 
 
-First, lets take a look at the host upgrade process.
+Based on observation, the host upgrade process is as follows:
 1. Upgrade Host
 2. Put Host into Maintenance Mode
 3. Reboot Host
 4. Some final configurations before moving on to upgrade the next host or to the next step
 
-There were 2 particular roadblocks that we faced here.
+There were 2 particular roadblocks that we faced during the upgrade.
 1. **'Reboot Host' Phase** - This was not so much of a VMware issue but more so related to the physical host itself. It took us awhile to realize that the upgrade was stuck at the 'Rebooting" stage and it wasn't progressing due to the host not being able to boot past the BIOS page. Once we did a graceful shutdown and proceed to power on the host again, the upgrade went on as per normal. 
-2. **'Put Host into Maintenance mode' Phase** - We were not too sure of the issue that was preventing the host to go into maintenance mode. Since the host has been cleared out of all active VMs that its sitting on it, we proceeded to reboot of the host and manually triggering the maintenance mode of the host upon restart. Thankfully, this fixed the issue and the upgrade progress.
+2. **'Put Host into Maintenance mode' Phase** - We were not too sure of the issue that was preventing the host to go into maintenance mode. Since the host has been cleared out of all active VMs as part of the pre-requites of going into maintenance mode, we proceeded to reboot the host and manually triggering the maintenance mode of the host again upon restart. Thankfully, this fixed the issue and the upgrade progress as per normal.
 
 ## Controller
 
-The errors faced during the upgrades of the controller were particularly interesting.
+The errors faced during the upgrading of the controller were particularly interesting.
 
 <figure class="align-center">
   <a href="/assets/images/nsx-t-upgrade/image001.jpg"><img src="/assets/images/nsx-t-upgrade/image001.jpg" alt="Upgrade Error"></a>
@@ -82,23 +82,23 @@ tmpfs                         4086560       0   4086560   0% /sys/fs/cgroup
 /dev/mapper/nsx-var+log      28143484 6623156  20178576  25% /var/log
 ```
 
-If we take a look at the screen capture below, we found out that the output of the customer's environment is slightly different from us. We notice that the ``/dev/mapper/nsx-config__bak `` folder is at 100% utilization and this immediately was a red flag to us.
+If we take a look at the screen capture below, we found out that the output of the customer's environment is slightly different from what we aspect. We notice that the ``/dev/mapper/nsx-config__bak `` folder is at 100% utilization and this immediately was a red flag to us.
 
 <figure class="align-center">
   <a href="/assets/images/nsx-t-upgrade/image002.jpg"><img src="/assets/images/nsx-t-upgrade/image002.jpg" alt="Upgrade Error"></a>
-  <figcaption style="text-align: center;">Low Quality Screen Capture of the output</figcaption>
+  <figcaption style="text-align: center;">Low Quality Screen Capture of the CLI Output</figcaption>
 </figure> 
 
-Next, we decided to trace the source of the exact contains that was eating up the space by doing the following.
+Next, we decided to further trace the source of the exact contains that was eating up the space by doing the following:
 
 1. Run ``du -sh /config_bak/*`` to list the folders within ``/config_bak`` to identify which folder is actually eating up the space.
 2. Repeat this process by adding another level of folder each time till the source has been identified.
 3. The final folder structure of the ``du -sh`` command that we have identified is as such:
 	* ``du -sh /config_bak/moot-server/localServiceManager/containers/Zookeeper/persistentStore/zkWorkspace/version-2/`` 
 
-The verdict was that there was a mixture of logs and snapshots stored under thee ``/config_bak`` folder that belongs to the internal Zookeeper instance which was taking up all the space.
+The verdict was that there was a mixture of logs and snapshots stored under the ``/config_bak`` folder that belongs to the internal Zookeeper instance which was taking up all the space.
 
-Lastly, what ran the following commands to delete any files that is related to logs or snapshots that are more than 7 days.
+To fix this, we ran the following commands to delete any files that is related to logs or snapshots that are more than 7 days in order to free up space.
 
 ```bash
  find /config_bak/moot-server/localServiceManager/containers/Zookeeper/persistentStore/zkWorkspace/version-2/log* -mtime +30 -exec rm -f {} \;
