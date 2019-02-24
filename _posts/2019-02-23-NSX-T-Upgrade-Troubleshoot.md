@@ -45,7 +45,7 @@ For the sake of readability, I have abstracted the error message from the above 
 [CCP UCP] Mirate CCP config failed for CCP node <node id number> migrate_ccp_config execution failed with ms: Exeception duringg CCP migration: [Errno 28] No space left on device MAIN UPGRADE SCRIPT FAILURE REASON: Script exited with non-zero return code 255
 ``
 
-After much sourcing around for help on the following error, we decided that the only way to find out more information about the error was to remote into the controller itself.
+After sourcing around for help on the following error, we decided that the only way to find out more information about the error was to remote into the controller itself.
 
 We proceed to carry out the following:
 1. ``ssh`` into the affected NSX-T controller
