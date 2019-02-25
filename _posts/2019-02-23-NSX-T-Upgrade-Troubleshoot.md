@@ -85,7 +85,7 @@ tmpfs                         4086560       0   4086560   0% /sys/fs/cgroup
 If we take a look at the screen capture below, we found out that the output of the customer's environment is slightly different from what we aspect. We notice that the ``/dev/mapper/nsx-config__bak `` folder is at 100% utilization and this immediately was a red flag to us.
 
 <figure class="align-center">
-  <a href="/assets/images/nsx-t-upgrade/image002.jpg"><img src="/assets/images/nsx-t-upgrade/image002.jpg" alt="Upgrade Error"></a>
+  <a href="/assets/images/nsx-t-upgrade/image002-edit.jpg"><img src="/assets/images/nsx-t-upgrade/image002-edit.jpg" alt="Upgrade Error"></a>
   <figcaption style="text-align: center;">Low Quality Screen Capture of the CLI Output</figcaption>
 </figure> 
 

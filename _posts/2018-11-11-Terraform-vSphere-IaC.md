@@ -1,14 +1,17 @@
 ---
 title: "Provisioning VMs on vSphere with Terraform"
 categories: 
-  - IaC
+  - SDDC
 tags:
   - Terraform
   - vSphere
+  - Infrastructure as a Code
+  - Automation
+  - IaC
 toc: true
 ---
 
-Over the weekend instead of accomplishing my entire TO-DO list, I kinda procrastinated and went totally of the track instead. I've have always wanted to check out what this whole **"Infrastructure as Code"** hype is all about and I have heard quite the buzz about Terraform being one of the solution that can help achieve this. 
+Over the weekend instead of accomplishing my entire TO-DO list, I kinda procrastinated and went totally off track. I've have always wanted to check out what this whole **"Infrastructure as Code"** hype is all about and I have heard quite the buzz about Terraform being one of the solution that can help achieve this. 
 
 ## What is Infrastructure as Code?
 
