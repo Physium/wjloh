@@ -89,7 +89,7 @@ If we take a look at the screen capture below, we found out that the output of t
   <figcaption style="text-align: center;">Low Quality Screen Capture of the CLI Output</figcaption>
 </figure> 
 
-Next, we decided to further trace the source of the exact contains that was eating up the space by doing the following:
+Next, we decided to further trace the source of the exact content that was eating up the space by doing the following:
 
 1. Run ``du -sh /config_bak/*`` to list the folders within ``/config_bak`` to identify which folder is actually eating up the space.
 2. Repeat this process by adding another level of folder each time till the source has been identified.
